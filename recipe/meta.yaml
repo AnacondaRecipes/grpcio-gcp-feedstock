@@ -6,14 +6,21 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: e292605effc7da39b7a8734c719afb12ec4b5362add3528d8afad3aa3aa9057c
+  url: https://github.com/GoogleCloudPlatform/grpc-gcp-python/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: 44de25348f489920efb3b1a05134816cfbc3e880fa92e3a7b4dfcb7e772ac625
 
 build:
-  number: 3
-  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  number: 4
+  script:
+    - cp template/version.py src/
+    - cp src/LICENSE .
+    - cd src
+    - python -m grpc_tools.protoc -I. --python_out=./grpc_gcp/proto --grpc_python_out=./grpc_gcp/proto grpc_gcp.proto
+    - {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
+  build:
+    - grpcio-tools
   host:
     - python
     - pip
