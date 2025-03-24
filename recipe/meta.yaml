@@ -10,8 +10,9 @@ source:
   sha256: e292605effc7da39b7a8734c719afb12ec4b5362add3528d8afad3aa3aa9057c
 
 build:
-  number: 3
+  number: 4
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  skip: true  # [py>=313]
 
 requirements:
   host:
@@ -22,7 +23,7 @@ requirements:
   run:
     - python
     - grpcio >=1.16.0
-    - protobuf >=3.6.1
+    - protobuf >=3.6.1,<3.21
 
 test:
   requires:
